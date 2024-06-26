@@ -9,7 +9,7 @@ tags:
   - name: Authentication
     description: Authentication operations
 paths:
-  /Login:
+  Auth/Login:
     post:
       tags:
         - Authentication
@@ -24,7 +24,7 @@ paths:
           description: Successful login
         '401':
           description: Unauthorized
-  /Register:
+  Auth/Register:
     post:
       tags:
         - Authentication

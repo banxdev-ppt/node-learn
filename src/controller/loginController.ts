@@ -2,12 +2,7 @@ import { Request, Response } from 'express';
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 // import bcrypt from 'bcrypt';
-
-interface IUser {
-  id?: number;
-  email: string;
-  password: string;
-}
+import { IUser } from '../types/global.type';
 
 const users: IUser[] = [{ id: 1, email: 'bank.pptsrm@gmail.com', password: 'password' }];
 
@@ -25,7 +20,7 @@ export default async function (req: Request, res: Response) {
   }
 
   try {
-    // for database
+    // query on database
     // const userPass = user.password;
     // const checkedPass = await bcrypt.compare(password, userPass);
     // console.log(checkedPass);

@@ -24,11 +24,10 @@ app.use('/auth', authRouter);
 
 const port = process.env.PORT;
 
-sequelize
-  .sync()
-  .then(() => console.log('database connected'))
-  .catch((err) => console.error('failed to connected database:', err));
-
 app.listen(port, () => {
+  sequelize
+    .sync()
+    .then(() => console.log('database connected'))
+    .catch((err) => console.error('failed to connected database:', err));
   console.log(`server listening on: http://localhost:${port}`);
 });
