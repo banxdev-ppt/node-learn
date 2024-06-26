@@ -9,7 +9,7 @@ tags:
   - name: Authentication
     description: Authentication operations
 paths:
-  Auth/Login:
+  /Auth/Login:
     post:
       tags:
         - Authentication
@@ -24,7 +24,7 @@ paths:
           description: Successful login
         '401':
           description: Unauthorized
-  Auth/Register:
+  /Auth/Register:
     post:
       tags:
         - Authentication
@@ -37,6 +37,43 @@ paths:
       responses:
         '201':
           description: User registered successfully
+        '400':
+          description: Bad request
+  /Users:
+    get:
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Users List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+  /Users/{id}:
+    get:
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+          description: user id
+      responses:
+        '200':
+          description: User information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
         '400':
           description: Bad request
 
@@ -58,6 +95,7 @@ components:
         - username
         - email
         - password
+        - address
       properties:
         username:
           type: string
@@ -67,3 +105,8 @@ components:
           type: string
         address:
           type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: number

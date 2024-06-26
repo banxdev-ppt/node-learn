@@ -1,18 +1,17 @@
 import { Sequelize, DataTypes } from 'sequelize';
-const config = require('../config/config.ts');
-
 import UserFactory, { UserModelStatic } from './UserModal';
+const config = require('../config/config');
 
 const sequelize = new Sequelize(config.DATABASE, config.USERNAME, config.PASSWORD, {
   host: config.HOST,
-  dialect: config.DIALECT,
+  dialect: config.DIALECT as any,
   port: config.DB_PORT,
 });
 
 interface DbInterface {
   sequelize: Sequelize;
   Sequelize: typeof Sequelize;
-  User: UserModelStatic;
+  user: UserModelStatic;
 }
 
 const db: DbInterface = {
@@ -20,6 +19,6 @@ const db: DbInterface = {
   Sequelize,
 } as DbInterface;
 
-db.User = UserFactory(sequelize);
+db.user = UserFactory(sequelize);
 
 export default db;
