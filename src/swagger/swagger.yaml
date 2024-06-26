@@ -9,9 +9,8 @@ tags:
   - name: Authentication
     description: Authentication operations
 paths:
-  /login:
+  /Login:
     post:
-      summary: Login to the application
       tags:
         - Authentication
       requestBody:
@@ -25,9 +24,8 @@ paths:
           description: Successful login
         '401':
           description: Unauthorized
-  /register:
+  /Register:
     post:
-      summary: Register a new user
       tags:
         - Authentication
       requestBody:
