@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: Node Leaning API
+  version: 1.0.0
+  description: swagger api documents authentication
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Authentication
+    description: Authentication operations
+paths:
+  /login:
+    post:
+      summary: Login to the application
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthLogin'
+      responses:
+        '200':
+          description: Successful login
+        '401':
+          description: Unauthorized
+  /register:
+    post:
+      summary: Register a new user
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRegister'
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Bad request
+
+components:
+  schemas:
+    AuthLogin:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    AuthRegister:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        address:
+          type: string
