@@ -12,48 +12,29 @@ export default async function registerAuth(req: Request, res: Response) {
     return res.status(400).json({ statusCode: 400, taskStatus: false, message: 'Missing required fields' });
   }
 
+  const t = await db.sequelize.transaction();
+
   try {
-    const t = await db.sequelize.transaction();
+    const existingUser = await db.user.findOne({ where: { [Op.or]: [{ username }, { email }] } });
 
-    try {
-      const existingUser = await db.user.findOne({
-        where: {
-          [Op.or]: [{ username }, { email }],
-        },
-      });
-
-      if (existingUser) {
-        await t.rollback();
-        return res.status(400).json({
-          statusCode: 400,
-          taskStatus: false,
-          message: existingUser.username === username ? 'Username already exists' : 'Email already exists',
-        });
-      }
-
-      const hashPassword = await bcrypt.hash(password, 10);
-      if (!hashPassword) {
-        await t.rollback();
-        return res.status(500).json({ statusCode: 500, taskStatus: false, message: 'Error hashing password' });
-      }
-
-      const token = jwt.sign({ email: email }, config.SECRET_KEY, { expiresIn: '1h' });
-
-      const newUser = await db.user.create({ username, password: hashPassword, email, address }, { transaction: t });
-
-      await t.commit();
-
-      res.status(201).json({
-        data: { id: newUser.id, username: newUser.username, email: newUser.email, address: newUser.address, token },
-        statusCode: 200,
-        taskStatus: true,
-      });
-    } catch (error) {
+    if (existingUser) {
       await t.rollback();
-      console.error(error);
-      res.status(500).json({ statusCode: 500, taskStatus: false, message: 'Internal server error' });
+      return res.status(400).json({ statusCode: 400, taskStatus: false, message: existingUser.username === username ? 'Username already exists' : 'Email already exists' });
     }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    if (!hashPassword) {
+      await t.rollback();
+      return res.status(500).json({ statusCode: 500, taskStatus: false, message: 'Error hashing password' });
+    }
+
+    const token = jwt.sign({ email: email }, config.SECRET_KEY, { expiresIn: '1h' });
+    const newUser = await db.user.create({ username, password: hashPassword, email, address }, { transaction: t });
+    await t.commit();
+
+    res.status(201).json({ data: [{ ...newUser.dataValues, token }], statusCode: 200, taskStatus: true });
   } catch (error) {
+    await t.rollback();
     console.error(error);
     res.status(500).json({ statusCode: 500, taskStatus: false, message: 'Internal server error' });
   }

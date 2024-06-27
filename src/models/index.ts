@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import UserFactory, { UserModelStatic } from './UserModal';
 const config = require('../config/config');
 

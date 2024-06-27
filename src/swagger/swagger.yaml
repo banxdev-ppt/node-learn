@@ -50,8 +50,6 @@ paths:
             application/json:
               schema:
                 type: array
-                items:
-                  $ref: '#/components/schemas/User'
         '400':
           description: Bad request
   /Users/{id}:

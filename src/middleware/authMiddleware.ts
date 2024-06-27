@@ -16,7 +16,6 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
   }
 
   const token = authHeader.replace('Bearer ', '');
-  console.log('Extracted token:', token);
 
   if (!token) {
     console.log('No token after Bearer');
@@ -24,9 +23,7 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
   }
 
   try {
-    console.log('Attempting to verify token with secret:', SECRET_KEY);
     const decoded = jwt.verify(token, SECRET_KEY!);
-    console.log('Decoded token:', decoded);
     (req as any).user = decoded;
     next();
   } catch (err) {

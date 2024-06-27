@@ -7,4 +7,5 @@ module.exports = {
   HOST: process.env.DB_HOST || 'localhost',
   DIALECT: process.env.DB_DIALECT || 'mysql',
   SECRET_KEY: process.env.SECRET_KEY || 'hugcode',
+  PORT: process.env.DB_PORT || 3306,
 };

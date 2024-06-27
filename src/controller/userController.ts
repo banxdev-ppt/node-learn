@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import db from '../models/index';
 
-export async function getUsers(req: Request, res: Response) {
+export async function getUsers(res: Response) {
   try {
     const users = await db.user.findAll();
     return res.status(200).json({ data: users, statusCode: 200, taskStatus: true });

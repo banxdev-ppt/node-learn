@@ -4,7 +4,7 @@ import { getUsers, getUserById } from '../controller/userController';
 
 const router = Router();
 
-router.get('/', getUsers);
-router.get('/:id', getUserById);
+router.get('/', authMiddleware, getUsers);
+router.get('/:id', authMiddleware, getUserById);
 
 module.exports = router;

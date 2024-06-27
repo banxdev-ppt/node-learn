@@ -27,7 +27,7 @@ export default async function (req: Request, res: Response) {
 
     if (!user) {
       console.log('Authentication failed for:', { email });
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'wrong password or user nor found' });
     }
 
     const token = jwt.sign({ id: user.id, email: user.email }, config.SECRET_KEY, { expiresIn: '1h' });
