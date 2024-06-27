@@ -24,6 +24,7 @@ export default async function (req: Request, res: Response) {
 
   try {
     const user = await authenticateUser(email, password);
+    const username = user?.dataValues.username;
 
     if (!user) {
       console.log('Authentication failed for:', { email });
@@ -32,8 +33,8 @@ export default async function (req: Request, res: Response) {
 
     const token = jwt.sign({ id: user.id, email: user.email }, config.SECRET_KEY, { expiresIn: '1h' });
 
-    const data = { email, token };
-    res.status(200).json({ data: [data], statusCode: 200, taskStatus: true });
+    const data = [{ username, email, token }];
+    res.status(200).json({ data, statusCode: 200, taskStatus: true });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ statusCode: 500, taskStatus: false });

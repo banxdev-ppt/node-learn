@@ -1,4 +1,4 @@
-import express, { Response } from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
@@ -24,14 +24,16 @@ const corsSetup = {
 
 app.use(cors(corsSetup));
 
-app.get('/', (res: Response) => {
+app.get('/', (req: Request, res: Response) => {
   res.send('server is running!');
 });
 
-app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
+//routes
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
+
+//api documentation
+app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 const port = process.env.PORT;
 

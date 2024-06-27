@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Node Leaning API
+  title: Node Learning API
   version: 1.0.0
   description: swagger api documents authentication
 servers:
@@ -8,6 +8,46 @@ servers:
 tags:
   - name: Authentication
     description: Authentication operations
+  - name: Users
+    description: Users operations
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    AuthLogin:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    AuthRegister:
+      type: object
+      required:
+        - username
+        - email
+        - password
+        - address
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        address:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: number
 paths:
   /Auth/Login:
     post:
@@ -43,6 +83,8 @@ paths:
     get:
       tags:
         - Users
+      security:
+        - BearerAuth: []
       responses:
         '200':
           description: Users List
@@ -56,6 +98,8 @@ paths:
     get:
       tags:
         - Users
+      security:
+        - BearerAuth: []
       parameters:
         - name: id
           in: path
@@ -74,37 +118,3 @@ paths:
           description: User not found
         '400':
           description: Bad request
-
-components:
-  schemas:
-    AuthLogin:
-      type: object
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-        password:
-          type: string
-    AuthRegister:
-      type: object
-      required:
-        - username
-        - email
-        - password
-        - address
-      properties:
-        username:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-        address:
-          type: string
-    User:
-      type: object
-      properties:
-        id:
-          type: number
