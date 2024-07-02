@@ -35,14 +35,23 @@ app.use('/users', userRouter);
 //api documentation
 app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
+//database sync connection
+async function databaseConnected() {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync({ alter: true });
+    console.log('database connected');
+    return true;
+  } catch (error) {
+    console.error('Unable to connect and synchronize database:', error);
+    return false;
+  }
+}
+
 const port = process.env.PORT;
 
-app.listen(port, async () => {
-  await sequelize.authenticate();
-  await sequelize.sync({ alter: true });
-  sequelize
-    .sync()
-    .then(() => console.log('database connected'))
-    .catch((err) => console.error('failed to connected database:', err));
-  console.log(`server listening on: http://localhost:${port}`);
+databaseConnected().then(() => {
+  app.listen(port, () => {
+    console.log(`server listening on: http://localhost:${port}`);
+  });
 });
