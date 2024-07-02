@@ -33,7 +33,7 @@ app.use('/auth', authRouter);
 app.use('/users', userRouter);
 
 //api documentation
-app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 //database sync connection
 async function databaseConnected() {
